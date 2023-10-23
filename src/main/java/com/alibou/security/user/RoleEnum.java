@@ -19,7 +19,7 @@ import static com.alibou.security.user.Permission.MANAGER_READ;
 import static com.alibou.security.user.Permission.MANAGER_UPDATE;
 
 @RequiredArgsConstructor
-public enum Role {
+public enum RoleEnum {
 
   USER(Collections.emptySet()),
   ADMIN(
