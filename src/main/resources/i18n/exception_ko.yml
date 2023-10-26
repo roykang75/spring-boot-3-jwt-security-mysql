@@ -1,0 +1,53 @@
+# exception_ko.yml
+
+unKnown:
+  code: "-9999"
+  msg: "알수 없는 오류가 발생하였습니다."
+
+#############################################
+## User
+userNotFound:
+  code: "-1000"
+  msg: "존재하지 않는 회원입니다."
+emailSigninFailed:
+  code: "-1001"
+  msg: "계정이 존재하지 않거나 이메일 또는 비밀번호가 정확하지 않습니다."
+entryPointException:
+  code: "-1002"
+  msg: "해당 리소스에 접근하기 위한 권한이 없습니다."
+accessDenied:
+  code: "-1003"
+  msg: "보유한 권한으로 접근할수 없는 리소스 입니다."
+userExisted:
+  code: "-1004"
+  msg: "이미 가입된 회원입니다."
+refreshTokenNotFound:
+  code: "-1005"
+  msg: "리플래쉬 토큰을 찾지 못했습니다."
+
+#############################################
+## Resource
+resourceNotExist:
+  code: "-2001"
+  msg: "요청한 자원이 존재 하지 않습니다."
+duplicateResourceExist:
+  code: "-2002"
+  msg: "동일한 자원 이미 존재합니다.."
+methodArgumentNotValid:
+  code: "-2003"
+  msg: "인자 값이 유효하지 않습니다. request dto를 확인하세요."
+resourceSaveFail:
+  code: "-2004"
+  msg: "리소스를 저장하는데 실패하였습니다."
+
+#############################################
+## Role
+duplicateRoleExist:
+  code: "-3001"
+  msg: "동일한 Role이 이미 존재합니다."
+duplicatePolicyExist:
+  code: "-3002"
+  msg: "동일한 Policy이 이미 존재합니다."
+duplicateStoreExist:
+  code: "-3003"
+  msg: "동일한 Store가 이미 존재합니다."

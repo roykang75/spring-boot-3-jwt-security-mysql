@@ -14,6 +14,11 @@ spring:
 #    database: postgresql
     database-platform: org.hibernate.dialect.MySQLDialect
     open-in-view: false
+  messages:
+    basename: i18n/exception
+    encoding: UTF-8
+  application:
+    name: user-service
 
 application:
   security:

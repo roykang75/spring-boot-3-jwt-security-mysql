@@ -1,0 +1,54 @@
+# exception_en.yml
+
+unKnown:
+  code: "-9999"
+  msg: "An unknown error has occurred."
+
+#############################################
+## User
+userNotFound:
+  code: "-1000"
+  msg: "This member not exist"
+emailSigninFailed:
+  code: "-1001"
+  msg: "Your account does not exist or your email or password is incorrect."
+entryPointException:
+  code: "-1002"
+  msg: "You do not have permission to access this resource."
+accessDenied:
+  code: "-1003"
+  msg: "A resource that can not be accessed with the privileges it has."
+duplicateUser:
+  code: "-1004"
+  msg: "You are already a registered member."
+refreshTokenNotFound:
+  code: "-1005"
+  msg: "refreshToken does not found."
+
+#############################################
+## Resource
+resourceNotExist:
+  code: "-2001"
+  msg: "This resource does not exist."
+duplicateResourceExist:
+  code: "-2002"
+  msg: "This resource exists already."
+methodArgumentNotValid:
+  code: "-2003"
+  msg: "argument not valid. check request dto."
+resourceSaveFail:
+  code: "-2004"
+  msg: "Failed to save resource."
+
+#############################################
+## Community
+
+duplicateRoleExist:
+  code: "-3001"
+  msg: "This category exists already."
+duplicatePolicyExist:
+  code: "-3002"
+  msg: "This topic exists already."
+duplicateStoreExist:
+  code: "-3003"
+  msg: "This store exists already."
