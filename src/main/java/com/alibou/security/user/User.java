@@ -27,9 +27,16 @@ public class User extends CommonDateEntity implements UserDetails {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer userSeq;
 
+  @Column(nullable = false, length = 10)
   private String firstname;
+
+  @Column(nullable = false, length = 30)
   private String lastname;
+
+  @Column(nullable = false, length = 100)
   private String email;
+
+  @Column(nullable = false, length = 30)
   private String password;
 
 //  @JsonIgnore

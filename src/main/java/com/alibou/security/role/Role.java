@@ -25,6 +25,7 @@ public class Role extends CommonDateEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long roleSeq;
 
+    @Column(nullable = false, length = 100)
     private String name;
 
     @Enumerated(EnumType.STRING)

@@ -23,6 +23,7 @@ public class Policy extends CommonDateEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long policySeq;
 
+    @Column(nullable = false, length = 100)
     private String name;
 
     @ManyToOne(fetch = FetchType.EAGER)

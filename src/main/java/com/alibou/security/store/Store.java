@@ -23,10 +23,19 @@ public class Store extends CommonDateEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long storeSeq;
 
+    @Column(nullable = false, length = 10)
     private String id;
+
+    @Column(nullable = false, length = 100)
     private String name;
+
+    @Column(nullable = false, length = 20)
     private String telephone;
+
+    @Column(nullable = false, length = 14)
     private String mobile;
+
+    @Column(nullable = false, length = 100)
     private String email;
 
     @Column(name = "registration", nullable = true, length = 10)
