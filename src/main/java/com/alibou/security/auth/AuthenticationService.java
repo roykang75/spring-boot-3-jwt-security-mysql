@@ -1,10 +1,9 @@
 package com.alibou.security.auth;
 
-import com.alibou.security.Operation.Operation;
-import com.alibou.security.Operation.OperationRepository;
-import com.alibou.security.advice.exception.CResourceNotExistException;
 import com.alibou.security.advice.exception.CUserNotFoundException;
 import com.alibou.security.config.JwtService;
+import com.alibou.security.operation.Operation;
+import com.alibou.security.operation.OperationRepository;
 import com.alibou.security.policy.Policy;
 import com.alibou.security.policy.PolicyRepository;
 import com.alibou.security.policy.Privilege;
@@ -17,7 +16,8 @@ import com.alibou.security.store.StoreRepository;
 import com.alibou.security.token.Token;
 import com.alibou.security.token.TokenRepository;
 import com.alibou.security.token.TokenType;
-import com.alibou.security.user.*;
+import com.alibou.security.user.User;
+import com.alibou.security.user.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

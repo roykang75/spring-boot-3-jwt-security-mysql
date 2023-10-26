@@ -2,7 +2,7 @@ package com.alibou.security.policy;
 
 import com.alibou.security.common.entity.CommonDateEntity;
 import com.alibou.security.role.Role;
-import com.alibou.security.Operation.Operation;
+import com.alibou.security.operation.Operation;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

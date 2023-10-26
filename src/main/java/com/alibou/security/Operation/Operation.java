@@ -1,4 +1,4 @@
-package com.alibou.security.Operation;
+package com.alibou.security.operation;
 
 import com.alibou.security.common.entity.CommonDateEntity;
 import com.alibou.security.policy.Policy;
@@ -20,6 +20,7 @@ public class Operation extends CommonDateEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long operationSeq;
 
+    @Column(nullable = false, length = 50)
     private String name;
 
     @OneToMany(mappedBy = "operation")

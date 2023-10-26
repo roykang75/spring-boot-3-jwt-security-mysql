@@ -36,7 +36,7 @@ public class User extends CommonDateEntity implements UserDetails {
   @Column(nullable = false, length = 100)
   private String email;
 
-  @Column(nullable = false, length = 30)
+  @Column(nullable = false, length = 100)
   private String password;
 
 //  @JsonIgnore
