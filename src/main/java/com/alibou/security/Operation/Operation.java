@@ -1,5 +1,6 @@
 package com.alibou.security.Operation;
 
+import com.alibou.security.common.entity.CommonDateEntity;
 import com.alibou.security.policy.Policy;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Operation {
+public class Operation extends CommonDateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

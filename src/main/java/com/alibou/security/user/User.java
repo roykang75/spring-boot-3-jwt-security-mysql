@@ -1,5 +1,6 @@
 package com.alibou.security.user;
 
+import com.alibou.security.common.entity.CommonDateEntity;
 import com.alibou.security.role.Role;
 import com.alibou.security.token.Token;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,8 +20,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "_user")
-public class User implements UserDetails {
+@Table(name = "user")
+public class User extends CommonDateEntity implements UserDetails {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,10 +32,12 @@ public class User implements UserDetails {
   private String email;
   private String password;
 
-//  @Enumerated(EnumType.STRING)
+//  @JsonIgnore
+//  @OneToOne(mappedBy = "user")
 //  private Role role;
-  @JsonIgnore
-  @OneToOne(mappedBy = "user")
+
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "role_seq")
   private Role role;
 
   @OneToMany(mappedBy = "user")

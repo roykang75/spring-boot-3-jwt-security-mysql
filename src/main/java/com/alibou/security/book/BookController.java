@@ -1,5 +1,7 @@
 package com.alibou.security.book;
 
+import com.alibou.security.common.service.ResponseService;
+import com.alibou.security.common.service.response.SingleResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookController {
 
+    private final ResponseService responseService;
     private final BookService service;
 
     @PostMapping
@@ -25,8 +28,13 @@ public class BookController {
         return ResponseEntity.accepted().build();
     }
 
+//    @GetMapping
+//    public ResponseEntity<List<Book>> findAllBooks() {
+//        return ResponseEntity.ok(service.findAll());
+//    }
+
     @GetMapping
-    public ResponseEntity<List<Book>> findAllBooks() {
-        return ResponseEntity.ok(service.findAll());
+    public SingleResult<List<Book>> findAllBooks() {
+        return responseService.getSingleResult(service.findAll());
     }
 }

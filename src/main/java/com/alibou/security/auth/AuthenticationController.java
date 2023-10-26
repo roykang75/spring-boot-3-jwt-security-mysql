@@ -1,5 +1,7 @@
 package com.alibou.security.auth;
 
+import com.alibou.security.common.service.ResponseService;
+import com.alibou.security.common.service.response.SingleResult;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -16,19 +18,21 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class AuthenticationController {
 
+  private final ResponseService responseService;
   private final AuthenticationService service;
 
   @PostMapping("/register")
-  public ResponseEntity<AuthenticationResponse> register(
+  public SingleResult<Object> register(
       @RequestBody RegisterRequest request
   ) {
-    return ResponseEntity.ok(service.register(request, null));
+    return responseService.getSingleResult(service.register(request, null));
   }
+
   @PostMapping("/authenticate")
-  public ResponseEntity<AuthenticationResponse> authenticate(
+  public SingleResult<Object> authenticate(
       @RequestBody AuthenticationRequest request
   ) {
-    return ResponseEntity.ok(service.authenticate(request));
+    return responseService.getSingleResult(service.authenticate(request));
   }
 
   @PostMapping("/refresh-token")

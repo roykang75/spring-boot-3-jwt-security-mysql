@@ -2,13 +2,18 @@ package com.alibou.security.auth;
 
 import com.alibou.security.Operation.Operation;
 import com.alibou.security.Operation.OperationRepository;
+import com.alibou.security.advice.exception.CResourceNotExistException;
+import com.alibou.security.advice.exception.CUserNotFoundException;
 import com.alibou.security.config.JwtService;
 import com.alibou.security.policy.Policy;
 import com.alibou.security.policy.PolicyRepository;
 import com.alibou.security.policy.Privilege;
 import com.alibou.security.policy.PrivilegeRepository;
+import com.alibou.security.role.Level;
 import com.alibou.security.role.Role;
 import com.alibou.security.role.RoleRepository;
+import com.alibou.security.store.Store;
+import com.alibou.security.store.StoreRepository;
 import com.alibou.security.token.Token;
 import com.alibou.security.token.TokenRepository;
 import com.alibou.security.token.TokenType;
@@ -17,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,7 +30,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -33,6 +42,7 @@ public class AuthenticationService {
   private final PolicyRepository policyRepository;
   private final PrivilegeRepository privilegeRepository;
   private final OperationRepository operationRepository;
+  private final StoreRepository storeRepository;
 
   private final TokenRepository tokenRepository;
   private final PasswordEncoder passwordEncoder;
@@ -40,25 +50,45 @@ public class AuthenticationService {
   private final AuthenticationManager authenticationManager;
 
   public AuthenticationResponse register(RegisterRequest request, Role role) {
-    var user = User.builder()
-        .firstname(request.getFirstname())
-        .lastname(request.getLastname())
-        .email(request.getEmail())
-        .password(passwordEncoder.encode(request.getPassword()))
-//        .role(role)
-        .build();
-    var savedUser = userRepository.save(user);
-    var jwtToken = jwtService.generateToken(user);
-    var refreshToken = jwtService.generateRefreshToken(user);
-    saveUserToken(savedUser, jwtToken);
+    // store
+    Store store = Store.builder()
+            .id("YC3KULWG")
+            .name("스타벅스")
+            .telephone("02-XXXX-XXXX")
+            .mobile("010-XXXX-XXXX")
+            .email("starbucks@mail.com")
+            .registration("111-111-00")
+            .build();
+
+    storeRepository.save(store);
+
+    if (role == null) {
+      role = Role.builder()
+              .level(Level.LEVEL_RED)
+              .name(request.getRole())
+              .store(store)
+              .build();
+    }
 
     // -----------------
     Role newRole = Role.builder()
             .name(role.getName())
             .level(role.getLevel())
-            .user(user)
+            .store(store)
             .build();
     Role storedRole = roleRepository.save(newRole);
+
+    var user = User.builder()
+        .firstname(request.getFirstname())
+        .lastname(request.getLastname())
+        .email(request.getEmail())
+        .password(passwordEncoder.encode(request.getPassword()))
+        .role(storedRole)
+        .build();
+    var savedUser = userRepository.save(user);
+    var jwtToken = jwtService.generateToken(user);
+    var refreshToken = jwtService.generateRefreshToken(user);
+    saveUserToken(savedUser, jwtToken);
 
     Operation operation = Operation.builder()
             .name("Casting")
@@ -66,26 +96,39 @@ public class AuthenticationService {
 
     Operation storedOperation = operationRepository.save(operation);
 
+    Privilege privilege1 = Privilege.builder()
+            .name("O_RW")
+            .build();
+
+    Privilege privilege2 = Privilege.builder()
+            .name("O_R")
+            .build();
+
+    Privilege privilege3 = Privilege.builder()
+            .name("O_W")
+            .build();
+
+    privilegeRepository.save(privilege1);
+    privilegeRepository.save(privilege2);
+    privilegeRepository.save(privilege3);
+
+    List<Privilege> privileges = new ArrayList<>();
+    privileges.add(privilege1);
+    privileges.add(privilege2);
+
     Policy policy = Policy.builder()
             .name("policy")
             .role(storedRole)
             .operation(storedOperation)
+            .privileges(privileges)
             .build();
 
     Policy storedPolicy = policyRepository.save(policy);
 
-    Privilege privilege = Privilege.builder()
-            .pCreate(1)
-            .pRead(1)
-            .pUpdate(1)
-            .pDelete(1)
-            .policy(storedPolicy)
-            .build();
+    Policy readPolicy = policyRepository.findByPolicySeq(1).get();
 
-    privilegeRepository.save(privilege);
-
-
-
+    log.debug("##########################################################");
+    log.debug("### readpolicy: {}", readPolicy.getPrivileges());
 
     return AuthenticationResponse.builder()
         .accessToken(jwtToken)
@@ -101,7 +144,7 @@ public class AuthenticationService {
         )
     );
     var user = userRepository.findByEmail(request.getEmail())
-        .orElseThrow();
+        .orElseThrow(CUserNotFoundException::new);
     var jwtToken = jwtService.generateToken(user);
     var refreshToken = jwtService.generateRefreshToken(user);
     revokeAllUserTokens(user);

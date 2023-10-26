@@ -24,15 +24,15 @@ public class SecurityApplication {
 	) {
 		return args -> {
 			var role = Role.builder()
-					.level(Level.RED)
-					.name("Admin")
+					.level(Level.LEVEL_RED)
+					.name("ADMIN")
 					.build();
 			var admin = RegisterRequest.builder()
 					.firstname("Admin")
 					.lastname("Admin")
 					.email("admin@mail.com")
 					.password("password")
-					.role(role)
+					.role("ADMIN")
 					.build();
 			System.out.println("Admin token: " + service.register(admin, role).getAccessToken());
 

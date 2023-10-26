@@ -1,20 +1,23 @@
 package com.alibou.security.policy;
 
+import com.alibou.security.common.entity.CommonDateEntity;
 import com.alibou.security.role.Role;
 import com.alibou.security.Operation.Operation;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Builder
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Policy {
+public class Policy extends CommonDateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +29,13 @@ public class Policy {
     @JoinColumn(name = "role_seq")
     private Role role;
 
-    @OneToMany(mappedBy = "policy")
-    private List<Privilege> privileges = new ArrayList<>();
+//    @OneToMany(mappedBy = "policy")
+//    private List<Privilege> privileges = new ArrayList<>();
+
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "privilege_seq")
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Privilege> privileges;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "operation_seq")

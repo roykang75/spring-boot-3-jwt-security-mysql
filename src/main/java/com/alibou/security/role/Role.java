@@ -1,5 +1,8 @@
 package com.alibou.security.role;
 
+import com.alibou.security.common.entity.CommonDateEntity;
+import com.alibou.security.common.enums.DeleteType;
+import com.alibou.security.store.Store;
 import com.alibou.security.policy.Policy;
 import com.alibou.security.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Role {
+public class Role extends CommonDateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,13 +30,27 @@ public class Role {
     @Enumerated(EnumType.STRING)
     private Level level;
 
-    @JsonIgnore
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_seq")
-    private User user;
+    @Column(columnDefinition="tinyint(1) default 0")
+    private int deleted;
+
+    @OneToMany(mappedBy = "role")
+    private List<User> users = new ArrayList<>();
 
     @OneToMany(mappedBy = "role")
     private List<Policy> policies = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_seq")
+    private Store store;
+
+    public void update(String name, Level level) {
+        this.name = name;
+        this.level = level;
+    }
+
+    public void delete() {
+        this.deleted = DeleteType.DELETED_YES.getValue();
+    }
 
     @Transient
     public List<SimpleGrantedAuthority> getAuthorities() {
