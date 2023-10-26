@@ -32,3 +32,27 @@ To build and run the project, follow these steps:
 * Run the project: mvn spring-boot:run 
 
 -> The application will be available at http://localhost:8080.
+
+---
+## Exflyer 추가
+
+* mysql: 8.x 버전으로 사용할 수 있도록 변경
+* Role, Policy, Privilege, Operation 추가
+
+### Role
+역할
+
+### Policy
+정책
+
+### Privilege
+권한
+
+### Operation
+기능
+
+---
+## Swagger UI
+
+swagger-ui: http://localhost:8080/swagger-ui/index.html
+

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration>
+
+<configuration scan="true" scanPeriod="60 seconds">
+
+	<springProperty scope="context" name="LOG_LEVEL"
+		source="spring.logging.level.root"></springProperty>
+
+	<springProperty name="SERVICE_NAME" source="spring.application.name"/>
+
+	<property name="LOG_ENCODER_PATTERN"
+			  value="%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight([ %-5level]) %green([${SERVICE_NAME}, %X{traceId:-}, %X{spanId:-}]) %yellow([%+10thread]) %cyan(%logger{0}:%line) : %msg%n" />
+
+	<appender name="STDOUT"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${LOG_ENCODER_PATTERN}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ROLLING"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+		<file>logs/${SERVICE_NAME}.log</file>
+
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>logs/${SERVICE_NAME}-%d{yyyy-MM-dd}.%i</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>30MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>5</maxHistory>
+			<cleanHistoryOnStart>false</cleanHistoryOnStart>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${LOG_ENCODER_PATTERN}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNC_ROLLING"
+		class="ch.qos.logback.classic.AsyncAppender" queueSize="512">
+		<appender-ref ref="ROLLING" />
+	</appender>
+
+
+	<logger name="jdbc" level="OFF" />
+	<logger name="com.zaxxer.hikari.pool.HikariPool" level="OFF" />
+	<logger name="com.netflix.discovery.DiscoveryClient" level="ERROR" />
+	<logger name="org.springframework.web.client.RestTemplate" level="ERROR" />
+	<logger name="org.apache.http.headers" level="ERROR" />
+	<logger name="org.apache.http.wire" level="ERROR" />
+	<logger name="org.springframework.web.HttpLogging" level="ERROR" />
+	<logger name="org.apache.http.client.protocol.RequestAddCookies" level="ERROR" />
+	<logger name="org.apache.http.client.protocol.RequestAuthCache" level="ERROR" />
+	<logger name="org.apache.http.impl.conn.DefaultManagedHttpClientConnection" level="ERROR" />
+	<logger name="org.apache.http.impl.conn.PoolingHttpClientConnectionManager" level="ERROR" />
+	<logger name="org.apache.http.impl.execchain.MainClientExec" level="ERROR" />
+
+	<root level="${LOG_LEVEL}">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="ASYNC_ROLLING" />
+	</root>
+</configuration>
