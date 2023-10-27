@@ -4,6 +4,7 @@ import com.alibou.security.auth.AuthenticationService;
 import com.alibou.security.auth.RegisterRequest;
 import com.alibou.security.role.Level;
 import com.alibou.security.role.Role;
+import com.alibou.security.user.Address;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

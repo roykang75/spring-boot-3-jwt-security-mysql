@@ -16,6 +16,7 @@ import com.alibou.security.store.StoreRepository;
 import com.alibou.security.token.Token;
 import com.alibou.security.token.TokenRepository;
 import com.alibou.security.token.TokenType;
+import com.alibou.security.user.Address;
 import com.alibou.security.user.User;
 import com.alibou.security.user.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -78,12 +79,20 @@ public class AuthenticationService {
             .build();
     Role storedRole = roleRepository.save(newRole);
 
+    // ----------------
+    var address = Address.builder()
+            .zipCode("11-111")
+            .address1("address1")
+            .address2("address2")
+            .build();
+
     var user = User.builder()
         .firstname(request.getFirstname())
         .lastname(request.getLastname())
         .email(request.getEmail())
         .password(passwordEncoder.encode(request.getPassword()))
         .role(storedRole)
+        .address(address)
         .build();
     var savedUser = userRepository.save(user);
     var jwtToken = jwtService.generateToken(user);

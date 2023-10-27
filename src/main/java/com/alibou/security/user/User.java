@@ -8,15 +8,13 @@ import jakarta.persistence.*;
 
 import java.util.Collection;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-@Data
 @Builder
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -38,6 +36,9 @@ public class User extends CommonDateEntity implements UserDetails {
 
   @Column(nullable = false, length = 100)
   private String password;
+
+  @Embedded
+  private Address address;
 
 //  @JsonIgnore
 //  @OneToOne(mappedBy = "user")
