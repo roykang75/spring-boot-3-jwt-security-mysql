@@ -2,6 +2,7 @@ package com.alibou.security.store;
 
 
 import com.alibou.security.advice.exception.CDuplicateRoleExistException;
+import com.alibou.security.advice.exception.CDuplicateStoreExistException;
 import com.alibou.security.advice.exception.CResourceNotExistException;
 import com.alibou.security.common.enums.DeleteType;
 import com.alibou.security.store.request.StoreRequest;
@@ -27,7 +28,7 @@ public class StoreService {
     @Transactional
     public StoreResponse save(StoreRequest storeRequest) {
         storeRepository.findByName(storeRequest.getName()).ifPresent(store -> {
-            throw new CDuplicateRoleExistException();
+            throw new CDuplicateStoreExistException();
         });
 
         String id = RandomStringUtils.randomAlphanumeric(8).toUpperCase();
