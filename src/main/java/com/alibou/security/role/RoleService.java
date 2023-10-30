@@ -1,7 +1,7 @@
 package com.alibou.security.role;
 
-import com.alibou.security.advice.exception.CDuplicateRoleExistException;
-import com.alibou.security.advice.exception.CResourceNotExistException;
+import com.alibou.security.advice.exception.DuplicateRoleExistException;
+import com.alibou.security.advice.exception.ResourceNotExistException;
 import com.alibou.security.common.enums.DeleteType;
 import com.alibou.security.role.request.RoleRequest;
 import com.alibou.security.role.response.RoleResponse;
@@ -25,12 +25,12 @@ public class RoleService {
 
     @Transactional
     public RoleResponse save(RoleRequest roleRequest) {
-        Store store = storeService.findById(roleRequest.getStoreId()).orElseThrow(CResourceNotExistException::new);
+        Store store = storeService.findById(roleRequest.getStoreId()).orElseThrow(ResourceNotExistException::new);
 //        roleRepository.findByName(roleRequest.getName()).ifPresent(role -> {
 //            throw new CDuplicateRoleExistException();
 //        });
         roleRepository.findByNameAndStore(roleRequest.getName(), store).ifPresent(role -> {
-            throw new CDuplicateRoleExistException();
+            throw new DuplicateRoleExistException();
         });
 
         Level level = Level.getLevel(roleRequest.getLevel());
@@ -51,14 +51,14 @@ public class RoleService {
 
     @Transactional(readOnly = true)
     public RoleResponse find(long seq) {
-        Role role = roleRepository.findByRoleSeq(seq).orElseThrow(CResourceNotExistException::new);
+        Role role = roleRepository.findByRoleSeq(seq).orElseThrow(ResourceNotExistException::new);
 
         return new RoleResponse(role);
     }
 
     @Transactional
     public RoleResponse update(long seq, RoleRequest roleRequest) {
-        Role role = roleRepository.findByRoleSeq(seq).orElseThrow(CResourceNotExistException::new);
+        Role role = roleRepository.findByRoleSeq(seq).orElseThrow(ResourceNotExistException::new);
         Level level = Level.getLevel(roleRequest.getLevel());
         role.update(roleRequest.getName(), level);
 
@@ -67,7 +67,7 @@ public class RoleService {
 
     @Transactional
     public boolean delete(long seq) {
-        Role role = roleRepository.findByRoleSeq(seq).orElseThrow(CResourceNotExistException::new);
+        Role role = roleRepository.findByRoleSeq(seq).orElseThrow(ResourceNotExistException::new);
         role.delete();
 
         return true;

@@ -27,27 +27,27 @@ public class ExceptionAdvice {
         return responseService.getFailResult(Integer.parseInt(getMessage("unKnown.code")), getMessage("unKnown.msg"));
     }
 
-    @ExceptionHandler(CUserNotFoundException.class)
+    @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    protected CommonResult userNotFoundException(HttpServletRequest request, CUserNotFoundException e) {
+    protected CommonResult userNotFoundException(HttpServletRequest request, UserNotFoundException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("userNotFound.code")), getMessage("userNotFound.msg"));
     }
 
-    @ExceptionHandler(CUserExistException.class)
+    @ExceptionHandler(UserExistException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    protected CommonResult duplicateUserException(HttpServletRequest request, CUserExistException e) {
+    protected CommonResult duplicateUserException(HttpServletRequest request, UserExistException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("userExisted.code")), getMessage("userExisted.msg"));
     }
 
-    @ExceptionHandler(CEmailSigninFailedException.class)
+    @ExceptionHandler(EmailSigninFailedException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    protected CommonResult emailSigninFailed(HttpServletRequest request, CEmailSigninFailedException e) {
+    protected CommonResult emailSigninFailed(HttpServletRequest request, EmailSigninFailedException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("emailSigninFailed.code")), getMessage("emailSigninFailed.msg"));
     }
 
-    @ExceptionHandler(CAuthenticationEntryPointException.class)
+    @ExceptionHandler(AuthenticationEntryPointException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public CommonResult authenticationEntryPointException(HttpServletRequest request, CAuthenticationEntryPointException e) {
+    public CommonResult authenticationEntryPointException(HttpServletRequest request, AuthenticationEntryPointException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("entryPointException.code")), getMessage("entryPointException.msg"));
     }
 
@@ -57,39 +57,39 @@ public class ExceptionAdvice {
         return responseService.getFailResult(Integer.parseInt(getMessage("accessDenied.code")), getMessage("accessDenied.msg"));
     }
 
-    @ExceptionHandler(CResourceNotExistException.class)
+    @ExceptionHandler(ResourceNotExistException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public CommonResult resourceNotExistException(HttpServletRequest request, CResourceNotExistException e) {
+    public CommonResult resourceNotExistException(HttpServletRequest request, ResourceNotExistException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("resourceNotExist.code")), getMessage("resourceNotExist.msg"));
     }
 
-    @ExceptionHandler(CResourceSaveFailException.class)
+    @ExceptionHandler(ResourceSaveFailException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public CommonResult resourceSaveFailException(HttpServletRequest request, CResourceSaveFailException e) {
+    public CommonResult resourceSaveFailException(HttpServletRequest request, ResourceSaveFailException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("resourceSaveFail.code")), getMessage("resourceSaveFail.msg"));
     }
 
-    @ExceptionHandler(CDuplicateResourceExistException.class)
+    @ExceptionHandler(DuplicateResourceExistException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public CommonResult duplicateResourceExistException(HttpServletRequest request, CDuplicateResourceExistException e) {
+    public CommonResult duplicateResourceExistException(HttpServletRequest request, DuplicateResourceExistException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("duplicateResourceExist.code")), getMessage("duplicateResourceExist.msg"));
     }
 
-    @ExceptionHandler(CDuplicateRoleExistException.class)
+    @ExceptionHandler(DuplicateRoleExistException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public CommonResult duplicateRoleExistException(HttpServletRequest request, CDuplicateRoleExistException e) {
+    public CommonResult duplicateRoleExistException(HttpServletRequest request, DuplicateRoleExistException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("duplicateRoleExist.code")), getMessage("duplicateRoleExist.msg"));
     }
 
-    @ExceptionHandler(CDuplicatePolicyExistException.class)
+    @ExceptionHandler(DuplicatePolicyExistException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public CommonResult duplicatePolicyExistException(HttpServletRequest request, CDuplicatePolicyExistException e) {
+    public CommonResult duplicatePolicyExistException(HttpServletRequest request, DuplicatePolicyExistException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("duplicatePolicyExist.code")), getMessage("duplicatePolicyExist.msg"));
     }
 
-    @ExceptionHandler(CDuplicateStoreExistException.class)
+    @ExceptionHandler(DuplicateStoreExistException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public CommonResult duplicateStoreExistException(HttpServletRequest request, CDuplicateStoreExistException e) {
+    public CommonResult duplicateStoreExistException(HttpServletRequest request, DuplicateStoreExistException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("duplicateStoreExist.code")), getMessage("duplicateStoreExist.msg"));
     }
 

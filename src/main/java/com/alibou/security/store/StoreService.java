@@ -1,15 +1,13 @@
 package com.alibou.security.store;
 
 
-import com.alibou.security.advice.exception.CDuplicateRoleExistException;
-import com.alibou.security.advice.exception.CDuplicateStoreExistException;
-import com.alibou.security.advice.exception.CResourceNotExistException;
+import com.alibou.security.advice.exception.DuplicateStoreExistException;
+import com.alibou.security.advice.exception.ResourceNotExistException;
 import com.alibou.security.common.enums.DeleteType;
 import com.alibou.security.store.request.StoreRequest;
 import com.alibou.security.store.response.StoreResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,7 +26,7 @@ public class StoreService {
     @Transactional
     public StoreResponse save(StoreRequest storeRequest) {
         storeRepository.findByName(storeRequest.getName()).ifPresent(store -> {
-            throw new CDuplicateStoreExistException();
+            throw new DuplicateStoreExistException();
         });
 
         Store store = Store.builder()
@@ -50,21 +48,21 @@ public class StoreService {
 
     @Transactional(readOnly = true)
     public StoreResponse find(long seq) {
-        Store store = storeRepository.findByStoreSeq(seq).orElseThrow(CResourceNotExistException::new);
+        Store store = storeRepository.findByStoreSeq(seq).orElseThrow(ResourceNotExistException::new);
 
         return new StoreResponse(store);
     }
 
     @Transactional(readOnly = true)
     public Optional<Store> findById(String id) {
-        Store store = storeRepository.findById(id).orElseThrow(CResourceNotExistException::new);
+        Store store = storeRepository.findById(id).orElseThrow(ResourceNotExistException::new);
 
         return Optional.of(store);
     }
 
     @Transactional
     public StoreResponse update(long seq, StoreRequest storeRequest) {
-        Store store = storeRepository.findByStoreSeq(seq).orElseThrow(CResourceNotExistException::new);
+        Store store = storeRepository.findByStoreSeq(seq).orElseThrow(ResourceNotExistException::new);
 
         store.update(storeRequest.getName(), storeRequest.getTelephone(), storeRequest.getMobile()
                 , storeRequest.getEmail(), storeRequest.getRegistration());
@@ -74,7 +72,7 @@ public class StoreService {
 
     @Transactional
     public boolean delete(long seq) {
-        Store store = storeRepository.findByStoreSeq(seq).orElseThrow(CResourceNotExistException::new);
+        Store store = storeRepository.findByStoreSeq(seq).orElseThrow(ResourceNotExistException::new);
         store.delete();
 
         return true;

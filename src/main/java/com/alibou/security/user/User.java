@@ -47,14 +47,15 @@ public class User extends CommonDateEntity implements UserDetails {
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "role_seq")
-  private Role role;
+  private Role roles;
 
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return role.getAuthorities();
+//    return role.getAuthorities();
+    return null;
   }
 
   @Override

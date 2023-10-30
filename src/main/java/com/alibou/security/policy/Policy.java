@@ -1,21 +1,23 @@
 package com.alibou.security.policy;
 
 import com.alibou.security.common.entity.CommonDateEntity;
-import com.alibou.security.role.Role;
-import com.alibou.security.operation.Operation;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@Builder
+@ToString
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Policy extends CommonDateEntity {
 
@@ -26,19 +28,19 @@ public class Policy extends CommonDateEntity {
     @Column(nullable = false, length = 100)
     private String name;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_seq")
-    private Role role;
-
-//    @OneToMany(mappedBy = "policy")
-//    private List<Privilege> privileges = new ArrayList<>();
-
 //    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "privilege_seq")
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<Privilege> privileges;
+//    @JoinColumn(name = "role_seq")
+//    private Role role;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "operation_seq")
-    private Operation operation;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Privilege> privileges = new ArrayList<>();
+
+    @Builder
+    public Policy(String name, List<Privilege> privileges) {
+        this.name = name;
+        if (privileges != null && !privileges.isEmpty()) {
+            this.privileges.addAll(privileges);
+        }
+    }
+
 }

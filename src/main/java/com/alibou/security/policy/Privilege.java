@@ -7,11 +7,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-@Builder
+@ToString
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Privilege extends CommonDateEntity {
 
@@ -25,8 +25,10 @@ public class Privilege extends CommonDateEntity {
     @Column(columnDefinition="tinyint(1) default 0")
     private int deleted;
 
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "policy_seq")
-//    private Policy policy;
+    @Builder
+    public Privilege(String name) {
+        this.name = name;
+    }
+
 
 }

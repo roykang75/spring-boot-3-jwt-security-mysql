@@ -1,14 +1,14 @@
 package com.alibou.security.role;
 
 public enum Level {
-    LEVEL_RED(1),
-    LEVEL_ORANGE(2),
-    LEVEL_YELLOW(3),
-    LEVEL_GREEN(4),
-    LEVEL_BLUE(5),
-    LEVEL_INDIGO(6),
-    LEVEL_VIOLET(7),
-    LEVEL_NONE(0),
+    RED(1),
+    ORANGE(2),
+    YELLOW(3),
+    GREEN(4),
+    BLUE(5),
+    INDIGO(6),
+    VIOLET(7),
+    NONE(0),
     ;
 
     private final int value;
@@ -24,15 +24,15 @@ public enum Level {
     public static Level getLevel(String level) {
         level = level.toUpperCase();
         switch (level) {
-            case "RED": return LEVEL_RED;
-            case "ORANGE": return LEVEL_ORANGE;
-            case "YELLOW": return LEVEL_YELLOW;
-            case "GREEN": return LEVEL_GREEN;
-            case "BLUE": return LEVEL_BLUE;
-            case "INDIGO": return LEVEL_INDIGO;
-            case "VIOLET": return LEVEL_VIOLET;
+            case "RED": return RED;
+            case "ORANGE": return ORANGE;
+            case "YELLOW": return YELLOW;
+            case "GREEN": return GREEN;
+            case "BLUE": return BLUE;
+            case "INDIGO": return INDIGO;
+            case "VIOLET": return VIOLET;
         }
 
-        return LEVEL_NONE;
+        return NONE;
     }
 }
