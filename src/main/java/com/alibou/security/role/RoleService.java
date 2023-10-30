@@ -36,7 +36,7 @@ public class RoleService {
         Level level = Level.getLevel(roleRequest.getLevel());
         Role role = Role.builder()
                 .name(roleRequest.getName())
-                .level(level)
+                .level("RED")
                 .store(store)
                 .build();
 

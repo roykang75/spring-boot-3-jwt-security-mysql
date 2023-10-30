@@ -17,7 +17,6 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Store extends CommonDateEntity {
     @Id

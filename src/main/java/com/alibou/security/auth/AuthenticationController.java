@@ -25,7 +25,7 @@ public class AuthenticationController {
   public SingleResult<Object> register(
       @RequestBody RegisterRequest request
   ) {
-    return responseService.getSingleResult(service.register(request, null));
+    return responseService.getSingleResult(service.register(request));
   }
 
   @PostMapping("/authenticate")

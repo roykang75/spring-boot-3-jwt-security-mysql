@@ -14,10 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Builder
+
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Role extends CommonDateEntity {
 
@@ -43,6 +42,13 @@ public class Role extends CommonDateEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_seq")
     private Store store;
+
+    @Builder
+    public Role(String name, String level, Store store) {
+        this.name = name;
+        this.level = Level.getLevel(level);
+        this.store = store;
+    }
 
     public void update(String name, Level level) {
         this.name = name;

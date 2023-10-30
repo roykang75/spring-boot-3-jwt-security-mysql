@@ -50,7 +50,7 @@ public class AuthenticationService {
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
 
-  public AuthenticationResponse register(RegisterRequest request, Role role) {
+  public AuthenticationResponse register(RegisterRequest request) {
     // store
     Store store = Store.builder()
             .name("스타벅스")
@@ -62,21 +62,13 @@ public class AuthenticationService {
 
     storeRepository.save(store);
 
-    if (role == null) {
-      role = Role.builder()
-              .level(Level.LEVEL_RED)
-              .name(request.getRole())
-              .store(store)
-              .build();
-    }
-
     // -----------------
-    Role newRole = Role.builder()
-            .name(role.getName())
-            .level(role.getLevel())
+    Role role = Role.builder()
+            .level("RED")
+            .name(request.getRole())
             .store(store)
             .build();
-    Role storedRole = roleRepository.save(newRole);
+    Role storedRole = roleRepository.save(role);
 
     // ----------------
     Address address = Address.builder()

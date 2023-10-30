@@ -5,6 +5,7 @@ import com.alibou.security.auth.RegisterRequest;
 import com.alibou.security.role.Level;
 import com.alibou.security.role.Role;
 import com.alibou.security.user.Address;
+import com.alibou.security.user.User;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -24,18 +25,14 @@ public class SecurityApplication {
 			AuthenticationService service
 	) {
 		return args -> {
-			var role = Role.builder()
-					.level(Level.LEVEL_RED)
-					.name("ADMIN")
-					.build();
-			var admin = RegisterRequest.builder()
+			RegisterRequest admin = RegisterRequest.builder()
 					.firstname("Admin")
 					.lastname("Admin")
 					.email("admin@mail.com")
 					.password("password")
 					.role("ADMIN")
 					.build();
-			System.out.println("Admin token: " + service.register(admin, role).getAccessToken());
+			System.out.println("Admin token: " + service.register(admin).getAccessToken());
 
 //			var manager = RegisterRequest.builder()
 //					.firstname("Admin")
