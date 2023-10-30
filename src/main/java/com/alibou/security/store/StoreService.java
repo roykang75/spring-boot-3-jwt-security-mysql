@@ -31,15 +31,11 @@ public class StoreService {
             throw new CDuplicateStoreExistException();
         });
 
-        String id = RandomStringUtils.randomAlphanumeric(8).toUpperCase();
-        log.debug("## id: {}", id);
-
         Store store = Store.builder()
-                .id(id)
                 .name(storeRequest.getName())
-                .email(storeRequest.getEmail())
                 .telephone(storeRequest.getTelephone())
                 .mobile(storeRequest.getMobile())
+                .email(storeRequest.getEmail())
                 .registration(storeRequest.getRegistration())
                 .build();
 

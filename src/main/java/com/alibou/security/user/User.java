@@ -14,11 +14,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Builder
+@ToString
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "USERS")
 public class User extends CommonDateEntity implements UserDetails {
 
   @Id

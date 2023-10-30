@@ -53,7 +53,6 @@ public class AuthenticationService {
   public AuthenticationResponse register(RegisterRequest request, Role role) {
     // store
     Store store = Store.builder()
-            .id("YC3KULWG")
             .name("스타벅스")
             .telephone("02-XXXX-XXXX")
             .mobile("010-XXXX-XXXX")
@@ -80,13 +79,13 @@ public class AuthenticationService {
     Role storedRole = roleRepository.save(newRole);
 
     // ----------------
-    var address = Address.builder()
+    Address address = Address.builder()
             .zipCode("11-111")
             .address1("address1")
             .address2("address2")
             .build();
 
-    var user = User.builder()
+    User user = User.builder()
         .firstname(request.getFirstname())
         .lastname(request.getLastname())
         .email(request.getEmail())
@@ -94,10 +93,12 @@ public class AuthenticationService {
         .role(storedRole)
         .address(address)
         .build();
-    var savedUser = userRepository.save(user);
-    var jwtToken = jwtService.generateToken(user);
-    var refreshToken = jwtService.generateRefreshToken(user);
+    User savedUser = userRepository.save(user);
+    String jwtToken = jwtService.generateToken(user);
+    String refreshToken = jwtService.generateRefreshToken(user);
     saveUserToken(savedUser, jwtToken);
+
+    log.debug("### user: {}", user.toString());
 
     Operation operation = Operation.builder()
             .name("Casting")
@@ -152,10 +153,10 @@ public class AuthenticationService {
             request.getPassword()
         )
     );
-    var user = userRepository.findByEmail(request.getEmail())
+    User user = userRepository.findByEmail(request.getEmail())
         .orElseThrow(CUserNotFoundException::new);
-    var jwtToken = jwtService.generateToken(user);
-    var refreshToken = jwtService.generateRefreshToken(user);
+    String jwtToken = jwtService.generateToken(user);
+    String refreshToken = jwtService.generateRefreshToken(user);
     revokeAllUserTokens(user);
     saveUserToken(user, jwtToken);
     return AuthenticationResponse.builder()
@@ -165,7 +166,7 @@ public class AuthenticationService {
   }
 
   private void saveUserToken(User user, String jwtToken) {
-    var token = Token.builder()
+    Token token = Token.builder()
 //        .user(user)
         .token(jwtToken)
         .tokenType(TokenType.BEARER)
@@ -176,7 +177,7 @@ public class AuthenticationService {
   }
 
   private void revokeAllUserTokens(User user) {
-    var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getUserSeq());
+    List<Token> validUserTokens = tokenRepository.findAllValidTokenByUser(user.getUserSeq());
     if (validUserTokens.isEmpty())
       return;
     validUserTokens.forEach(token -> {
@@ -199,13 +200,13 @@ public class AuthenticationService {
     refreshToken = authHeader.substring(7);
     userEmail = jwtService.extractUsername(refreshToken);
     if (userEmail != null) {
-      var user = this.userRepository.findByEmail(userEmail)
-              .orElseThrow();
+      User user = this.userRepository.findByEmail(userEmail)
+              .orElseThrow(CUserNotFoundException::new);
       if (jwtService.isTokenValid(refreshToken, user)) {
-        var accessToken = jwtService.generateToken(user);
+        String accessToken = jwtService.generateToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, accessToken);
-        var authResponse = AuthenticationResponse.builder()
+        AuthenticationResponse authResponse = AuthenticationResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();

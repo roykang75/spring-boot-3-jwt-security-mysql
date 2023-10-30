@@ -9,11 +9,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -46,6 +47,18 @@ public class Store extends CommonDateEntity {
 
     @OneToMany(mappedBy = "store")
     private List<Role> roles = new ArrayList<>();
+
+    @Builder
+    public Store(String name, String telephone, String mobile, String email, String registration) {
+        String id = RandomStringUtils.randomAlphanumeric(8).toUpperCase();
+
+        this.id  = id;
+        this.name = name;
+        this.telephone = telephone;
+        this.mobile = mobile;
+        this.email = email;
+        this.registration = registration;
+    }
 
     public void update(String name, String telephone, String mobile, String email, String registration) {
         this.name = name;
