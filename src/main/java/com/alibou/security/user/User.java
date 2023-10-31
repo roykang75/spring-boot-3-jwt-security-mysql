@@ -47,15 +47,27 @@ public class User extends CommonDateEntity implements UserDetails {
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "role_seq")
-  private Role roles;
+  private Role role;
 
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-//    return role.getAuthorities();
-    return null;
+    return role.getAuthorities();
+  }
+
+  public User(String firstname, String lastname, String email, String password, Address address) {
+    this.firstname = firstname;
+    this.lastname = lastname;
+    this.email = email;
+    this.password = password;
+
+      this.address = Address.builder()
+            .zipCode(address.getZipCode())
+            .address1(address.getAddress1())
+            .address2(address.getAddress2())
+            .build();
   }
 
   @Override

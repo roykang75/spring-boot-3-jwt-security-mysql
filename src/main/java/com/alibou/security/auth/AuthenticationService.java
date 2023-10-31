@@ -90,7 +90,7 @@ public class AuthenticationService {
                 .lastname(request.getLastname())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .roles(storedRole)
+                .role(storedRole)
                 .address(address)
                 .build();
 
