@@ -31,3 +31,11 @@ build/
 
 ### VS Code ###
 .vscode/
+
+## mac
+.DS_Store
+
+## log
+/logs
+/.gradle
+/gradle
