@@ -2,8 +2,8 @@ package com.alibou.security.auth;
 
 import com.alibou.security.advice.exception.UserNotFoundException;
 import com.alibou.security.config.JwtService;
-import com.alibou.security.operation.Operation;
-import com.alibou.security.operation.OperationRepository;
+import com.alibou.security.apifunc.ApiFunc;
+import com.alibou.security.apifunc.ApiFuncRepository;
 import com.alibou.security.policy.Policy;
 import com.alibou.security.policy.PolicyRepository;
 import com.alibou.security.policy.Privilege;
@@ -21,7 +21,6 @@ import com.alibou.security.user.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -29,11 +28,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -44,7 +43,7 @@ public class AuthenticationService {
     private final RoleRepository roleRepository;
     private final PolicyRepository policyRepository;
     private final PrivilegeRepository privilegeRepository;
-    private final OperationRepository operationRepository;
+    private final ApiFuncRepository apiFuncRepository;
     private final StoreRepository storeRepository;
 
     private final TokenRepository tokenRepository;
@@ -103,20 +102,21 @@ public class AuthenticationService {
 
         log.debug("### user: {}", user.toString());
 
-        Operation operation = Operation.builder()
-                .name("Casting")
+        ApiFunc apiFunc = ApiFunc.builder()
+                .name("권한조회")
+                .path("/api/v1/role/1")
                 .policies(policies)
                 .build();
 
-        operationRepository.save(operation);
-        Policy readPolicy = policyRepository.findByPolicySeq(1).get();
-        Operation readOperation = operationRepository.findByOperationSeq(1).get();
-        Role readRole = roleRepository.findByRoleSeq(1).get();
+        apiFuncRepository.save(apiFunc);
+        Policy readPolicy = policyRepository.findBySeq(1).get();
+        ApiFunc readApiFunc = apiFuncRepository.findBySeq(1).get();
+        Role readRole = roleRepository.findBySeq(1).get();
         User readUser = userRepository.findByEmail(request.getEmail()).get();
 
         log.debug("##########################################################");
         log.debug("### policy: {}", readPolicy.toString());
-        log.debug("### operation: {}", readOperation.toString());
+        log.debug("### apiFunc: {}", readApiFunc.toString());
         log.debug("### role: {}", readRole.toString());
         log.debug("### user: {}", readUser.toString());
 
@@ -188,7 +188,7 @@ public class AuthenticationService {
     }
 
     private void revokeAllUserTokens(User user) {
-        List<Token> validUserTokens = tokenRepository.findAllValidTokenByUser(user.getUserSeq());
+        List<Token> validUserTokens = tokenRepository.findAllValidTokenByUser(user.getSeq());
         if (validUserTokens.isEmpty()) {
             return;
         }

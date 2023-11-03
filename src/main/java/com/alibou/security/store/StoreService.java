@@ -48,7 +48,7 @@ public class StoreService {
 
     @Transactional(readOnly = true)
     public StoreResponse find(long seq) {
-        Store store = storeRepository.findByStoreSeq(seq).orElseThrow(ResourceNotExistException::new);
+        Store store = storeRepository.findBySeq(seq).orElseThrow(ResourceNotExistException::new);
 
         return new StoreResponse(store);
     }
@@ -62,7 +62,7 @@ public class StoreService {
 
     @Transactional
     public StoreResponse update(long seq, StoreRequest storeRequest) {
-        Store store = storeRepository.findByStoreSeq(seq).orElseThrow(ResourceNotExistException::new);
+        Store store = storeRepository.findBySeq(seq).orElseThrow(ResourceNotExistException::new);
 
         store.update(storeRequest.getName(), storeRequest.getTelephone(), storeRequest.getMobile()
                 , storeRequest.getEmail(), storeRequest.getRegistration());
@@ -72,7 +72,7 @@ public class StoreService {
 
     @Transactional
     public boolean delete(long seq) {
-        Store store = storeRepository.findByStoreSeq(seq).orElseThrow(ResourceNotExistException::new);
+        Store store = storeRepository.findBySeq(seq).orElseThrow(ResourceNotExistException::new);
         store.delete();
 
         return true;

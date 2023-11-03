@@ -99,6 +99,24 @@ public class ExceptionAdvice {
         return responseService.getFailResult(Integer.parseInt(getMessage("methodArgumentNotValid.code")), getMessage("methodArgumentNotValid.msg"));
     }
 
+    @ExceptionHandler(JwtNotValidException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    protected CommonResult jwtNotValidException(HttpServletRequest request, JwtNotValidException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("jwtNotValidException.code")), getMessage("jwtNotValidException.msg"));
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    protected CommonResult forbiddenException(HttpServletRequest request, ForbiddenException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("forbiddenException.code")), getMessage("forbiddenException.msg"));
+    }
+
+    @ExceptionHandler(InternalServerException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    protected CommonResult internalServerException(HttpServletRequest request, InternalServerException e) {
+        return responseService.getFailResult(Integer.parseInt(getMessage("internalServerException.code")), getMessage("internalServerException.msg"));
+    }
+
     // code정보에 해당하는 메시지를 조회합니다.
     private String getMessage(String code) {
         return getMessage(code, null);

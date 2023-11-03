@@ -2,17 +2,19 @@ package com.alibou.security.store;
 
 import com.alibou.security.common.entity.CommonDateEntity;
 import com.alibou.security.common.enums.DeleteType;
-import com.alibou.security.role.Level;
 import com.alibou.security.role.Role;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Getter
@@ -21,7 +23,7 @@ import java.util.List;
 public class Store extends CommonDateEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long storeSeq;
+    private long seq;
 
     @Column(nullable = false, length = 10)
     private String id;

@@ -23,7 +23,7 @@ public class Role extends CommonDateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long roleSeq;
+    private long seq;
 
     @Column(nullable = false, length = 100)
     private String name;
@@ -33,10 +33,6 @@ public class Role extends CommonDateEntity {
 
     @Column(columnDefinition="tinyint(1) default 0")
     private int deleted;
-
-
-//    @OneToMany(fetch = FetchType.EAGER)
-//    private List<User> users = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.EAGER)
     private List<Policy> policies = new ArrayList<>();

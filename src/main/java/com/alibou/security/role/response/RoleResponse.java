@@ -10,7 +10,7 @@ public class RoleResponse {
     private String level;
 
     public RoleResponse(Role role) {
-        this.seq = role.getRoleSeq();
+        this.seq = role.getSeq();
         this.name = role.getName();
         this.level = role.getLevel().name();
     }

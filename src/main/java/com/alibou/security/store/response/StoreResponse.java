@@ -15,7 +15,7 @@ public class StoreResponse {
     private String registration;
 
     public StoreResponse(Store store) {
-        this.seq = store.getStoreSeq();
+        this.seq = store.getSeq();
         this.id = store.getId();
         this.name = store.getName();
         this.telephone = store.getTelephone();

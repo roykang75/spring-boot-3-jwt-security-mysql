@@ -39,15 +39,25 @@ methodArgumentNotValid:
 resourceSaveFail:
   code: "-2004"
   msg: "리소스를 저장하는데 실패하였습니다."
-
-#############################################
-## Role
+jwtNotValidException:
+  code: "-2005"
+  msg: "잘못된 Jwt token 입니다. Jwt token을 확인하세요."
 duplicateRoleExist:
-  code: "-3001"
+  code: "-2006"
   msg: "동일한 Role이 이미 존재합니다."
 duplicatePolicyExist:
-  code: "-3002"
+  code: "-2007"
   msg: "동일한 Policy이 이미 존재합니다."
 duplicateStoreExist:
-  code: "-3003"
+  code: "-2008"
   msg: "동일한 Store가 이미 존재합니다."
+
+#############################################
+## Permission
+forbiddenException:
+  code: "-3001"
+  msg: "리소스 접근이 거부되었습니다."
+
+internalServerException:
+  code: "-9001"
+  msg: "서버 내부 에러가 발생하였습니다. 로그파일을 참고하세요."

@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface PolicyRepository extends JpaRepository<Policy, Integer> {
-    Optional<Policy> findByPolicySeq(long seq);
+    Optional<Policy> findBySeq(long seq);
 }

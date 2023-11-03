@@ -23,14 +23,10 @@ public class Policy extends CommonDateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long policySeq;
+    private long seq;
 
     @Column(nullable = false, length = 100)
     private String name;
-
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "role_seq")
-//    private Role role;
 
     @OneToMany(fetch = FetchType.EAGER)
     private List<Privilege> privileges = new ArrayList<>();

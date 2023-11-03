@@ -24,7 +24,7 @@ public class User extends CommonDateEntity implements UserDetails {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer userSeq;
+  private Integer seq;
 
   @Column(nullable = false, length = 10)
   private String firstname;
@@ -49,7 +49,7 @@ public class User extends CommonDateEntity implements UserDetails {
   @JoinColumn(name = "role_seq")
   private Role role;
 
-  @OneToMany(mappedBy = "user")
+  @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
   private List<Token> tokens;
 
   @Override

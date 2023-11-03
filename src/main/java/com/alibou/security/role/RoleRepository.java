@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface RoleRepository extends JpaRepository<Role, Integer>, JpaSpecificationExecutor<Role> {
     Optional<Role> findByName(String name);
     Optional<Role> findByNameAndStore(String name, Store store);
-    Optional<Role> findByRoleSeq(long seq);
+    Optional<Role> findBySeq(long seq);
 
     Page<Role> findByDeletedEquals(int deleted, Pageable pageable);
 }

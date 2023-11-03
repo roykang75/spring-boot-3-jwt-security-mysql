@@ -1,19 +1,35 @@
 package com.alibou.security.config;
 
+import com.alibou.security.advice.exception.ForbiddenException;
+import com.alibou.security.advice.exception.UserNotFoundException;
+import com.alibou.security.policy.PolicyService;
+import com.alibou.security.user.User;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 @Slf4j
+@RequiredArgsConstructor
 @Component
 public class WebSecurity {
+
+    private final PolicyService policyService;
+
     public boolean check(Authentication authentication, HttpServletRequest request) {
         log.debug("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-        log.debug("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-        log.debug("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+        log.debug(">> authentication: {}", authentication.toString());
         log.info(">>> requestURI : {}", request.getRequestURI());
 
-        return true;
+        User user = null;
+        try {
+            user = (User) authentication.getPrincipal();
+            log.debug(">> user: {}", user.toString());
+        } catch (Exception e) {
+            return false;
+        }
+
+        return policyService.hasPermission(user.getRole().getPolicies(), request.getRequestURI());
     }
 }

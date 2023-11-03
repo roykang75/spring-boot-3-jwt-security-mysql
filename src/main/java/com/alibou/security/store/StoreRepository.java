@@ -9,9 +9,7 @@ import java.util.Optional;
 
 public interface StoreRepository extends JpaRepository<Store, Integer>, JpaSpecificationExecutor<Store> {
     Optional<Store> findByName(String name);
-    Optional<Store> findByStoreSeq(long seq);
-
+    Optional<Store> findBySeq(long seq);
     Optional<Store> findById(String id);
-
     Page<Store> findByDeletedEquals(int deleted, Pageable pageable);
 }

@@ -51,14 +51,14 @@ public class RoleService {
 
     @Transactional(readOnly = true)
     public RoleResponse find(long seq) {
-        Role role = roleRepository.findByRoleSeq(seq).orElseThrow(ResourceNotExistException::new);
+        Role role = roleRepository.findBySeq(seq).orElseThrow(ResourceNotExistException::new);
 
         return new RoleResponse(role);
     }
 
     @Transactional
     public RoleResponse update(long seq, RoleRequest roleRequest) {
-        Role role = roleRepository.findByRoleSeq(seq).orElseThrow(ResourceNotExistException::new);
+        Role role = roleRepository.findBySeq(seq).orElseThrow(ResourceNotExistException::new);
         Level level = Level.getLevel(roleRequest.getLevel());
         role.update(roleRequest.getName(), level);
 
@@ -67,7 +67,7 @@ public class RoleService {
 
     @Transactional
     public boolean delete(long seq) {
-        Role role = roleRepository.findByRoleSeq(seq).orElseThrow(ResourceNotExistException::new);
+        Role role = roleRepository.findBySeq(seq).orElseThrow(ResourceNotExistException::new);
         role.delete();
 
         return true;

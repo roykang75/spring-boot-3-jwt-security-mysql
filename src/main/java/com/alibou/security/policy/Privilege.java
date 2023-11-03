@@ -17,7 +17,7 @@ public class Privilege extends CommonDateEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long privilegeSeq;
+    private long seq;
 
     @Column(nullable = false, length = 100)
     private String name;

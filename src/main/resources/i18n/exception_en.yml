@@ -35,20 +35,29 @@ duplicateResourceExist:
   msg: "This resource exists already."
 methodArgumentNotValid:
   code: "-2003"
-  msg: "argument not valid. check request dto."
+  msg: "argument not valid. please check request dto."
 resourceSaveFail:
   code: "-2004"
   msg: "Failed to save resource."
-
-#############################################
-## Community
-
+jwtNotValidException:
+  code: "-2005"
+  msg: "jwt token not valid. please check jwt token"
 duplicateRoleExist:
-  code: "-3001"
+  code: "-2006"
   msg: "This category exists already."
 duplicatePolicyExist:
-  code: "-3002"
+  code: "-2007"
   msg: "This topic exists already."
 duplicateStoreExist:
-  code: "-3003"
+  code: "-2008"
   msg: "This store exists already."
+
+#############################################
+## Permission
+forbiddenException:
+  code: "-3001"
+  msg: "Resource access denied."
+
+internalServerException:
+  code: "-9001"
+  msg: "Internal server error. please check logs."
