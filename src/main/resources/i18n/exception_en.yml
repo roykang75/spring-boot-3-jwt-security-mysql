@@ -61,3 +61,19 @@ forbiddenException:
 internalServerException:
   code: "-9001"
   msg: "Internal server error. please check logs."
+
+
+#############################################
+## Authentication
+
+signatureException:
+  code: "9001"
+  msg: "The token is invalid."
+
+malformedJwtException:
+  code: "9002"
+  msg: "The token is invalid."
+
+expiredJwtException:
+  code: "9003"
+  msg: "The token has expired."

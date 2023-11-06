@@ -68,6 +68,11 @@ public class AuthenticationService {
         List<Policy> policies = new ArrayList<>();
         policies.add(policy);
 
+
+        Policy policy2 = makeTestPolicy2();
+        List<Policy> policies2 = new ArrayList<>();
+        policies2.add(policy2);
+
         // -----------------
         Role role = Role.builder()
                 .level("RED")
@@ -93,8 +98,6 @@ public class AuthenticationService {
                 .address(address)
                 .build();
 
-//        storedRole.userAdd(user);
-
         User savedUser = userRepository.save(user);
         String jwtToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
@@ -105,7 +108,7 @@ public class AuthenticationService {
         ApiFunc apiFunc = ApiFunc.builder()
                 .name("권한조회")
                 .path("/api/v1/role/1")
-                .policies(policies)
+                .policies(policies2)
                 .build();
 
         apiFuncRepository.save(apiFunc);
@@ -149,6 +152,37 @@ public class AuthenticationService {
 
         Policy policy = Policy.builder()
                 .name("policy")
+                .privileges(privileges)
+                .build();
+
+        Policy storedPolicy = policyRepository.save(policy);
+
+        return storedPolicy;
+    }
+
+    private Policy makeTestPolicy2() {
+        Privilege privilege1 = Privilege.builder()
+                .name("O_RW")
+                .build();
+
+        Privilege privilege2 = Privilege.builder()
+                .name("O_R")
+                .build();
+
+        Privilege privilege3 = Privilege.builder()
+                .name("O_W")
+                .build();
+
+        privilegeRepository.save(privilege1);
+        privilegeRepository.save(privilege2);
+        privilegeRepository.save(privilege3);
+
+        List<Privilege> privileges = new ArrayList<>();
+        privileges.add(privilege1);
+        privileges.add(privilege2);
+
+        Policy policy = Policy.builder()
+                .name("policy2")
                 .privileges(privileges)
                 .build();
 

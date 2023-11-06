@@ -3,6 +3,9 @@ package com.alibou.security.advice;
 import com.alibou.security.advice.exception.*;
 import com.alibou.security.common.service.ResponseService;
 import com.alibou.security.common.service.response.CommonResult;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -99,11 +102,11 @@ public class ExceptionAdvice {
         return responseService.getFailResult(Integer.parseInt(getMessage("methodArgumentNotValid.code")), getMessage("methodArgumentNotValid.msg"));
     }
 
-    @ExceptionHandler(JwtNotValidException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    protected CommonResult jwtNotValidException(HttpServletRequest request, JwtNotValidException e) {
-        return responseService.getFailResult(Integer.parseInt(getMessage("jwtNotValidException.code")), getMessage("jwtNotValidException.msg"));
-    }
+//    @ExceptionHandler(JwtNotValidException.class)
+//    @ResponseStatus(HttpStatus.FORBIDDEN)
+//    protected CommonResult jwtNotValidException(HttpServletRequest request, JwtNotValidException e) {
+//        return responseService.getFailResult(Integer.parseInt(getMessage("jwtNotValidException.code")), getMessage("jwtNotValidException.msg"));
+//    }
 
     @ExceptionHandler(ForbiddenException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
@@ -115,6 +118,24 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected CommonResult internalServerException(HttpServletRequest request, InternalServerException e) {
         return responseService.getFailResult(Integer.parseInt(getMessage("internalServerException.code")), getMessage("internalServerException.msg"));
+    }
+
+    @ExceptionHandler(SignatureException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public CommonResult signatureException() {
+        return responseService.getFailResult(Integer.parseInt(getMessage("signatureException.code")), getMessage("signatureException.msg"));
+    }
+
+    @ExceptionHandler(MalformedJwtException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public CommonResult malformedJwtException() {
+        return responseService.getFailResult(Integer.parseInt(getMessage("malformedJwtException.code")), getMessage("malformedJwtException.msg"));
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public CommonResult expiredJwtException() {
+        return responseService.getFailResult(Integer.parseInt(getMessage("expiredJwtException.code")), getMessage("expiredJwtException.msg"));
     }
 
     // code정보에 해당하는 메시지를 조회합니다.

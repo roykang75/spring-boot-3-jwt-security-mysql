@@ -1,19 +1,12 @@
 package com.alibou.security.config;
 
-import com.alibou.security.advice.exception.JwtNotValidException;
-import com.alibou.security.advice.exception.ResourceNotExistException;
 import com.alibou.security.token.TokenRepository;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import java.beans.Transient;
 import java.io.IOException;
-import java.security.Security;
-
-import jakarta.transaction.TransactionScoped;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
@@ -36,52 +29,48 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(
-        @NonNull HttpServletRequest request,
-        @NonNull HttpServletResponse response,
-        @NonNull FilterChain filterChain
-    ) throws ServletException, IOException, JwtNotValidException {
+            @NonNull HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain
+    ) throws ServletException, IOException {
         if (request.getServletPath().contains("/api/v1/auth")) {
             filterChain.doFilter(request, response);
             return;
         }
-        final String authHeader = request.getHeader("Authorization");
-        final String jwt;
-        final String userEmail;
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            log.debug("###############################################");
-            log.debug("###############################################");
-            log.debug("###############################################");
-            log.debug("###############################################");
-            log.debug("###############################################");
-            log.debug("###############################################");
-//            filterChain.doFilter(request, response);
-            throw new JwtNotValidException();
-        }
-        jwt = authHeader.substring(7);
 
         try {
+            final String authHeader = request.getHeader("Authorization");
+            final String jwt;
+            final String userEmail;
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                log.debug("### SignatureException: authHeader is null");
+                throw new SignatureException("error");
+            }
+            jwt = authHeader.substring(7);
+
             userEmail = jwtService.extractUsername(jwt);
+            log.debug("### userEmail: {}", userEmail);
             if (userEmail != null
-                && SecurityContextHolder.getContext().getAuthentication() == null) {
+                    && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
                 var isTokenValid = tokenRepository.findByToken(jwt)
-                    .map(t -> !t.isExpired() && !t.isRevoked())
-                    .orElse(false);
+                        .map(t -> !t.isExpired() && !t.isRevoked())
+                        .orElse(false);
                 if (jwtService.isTokenValid(jwt, userDetails) && isTokenValid) {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
+                            userDetails,
+                            null,
+                            userDetails.getAuthorities()
                     );
                     authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
+                            new WebAuthenticationDetailsSource().buildDetails(request)
                     );
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
 
         } catch (Exception e) {
-            throw new JwtNotValidException();
+            request.setAttribute("exception", e);
         }
 
         filterChain.doFilter(request, response);
